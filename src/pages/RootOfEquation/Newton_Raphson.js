@@ -3,6 +3,7 @@ import { Card, Input, Button, Table, Col, Row } from 'antd';
 import 'antd/dist/antd.css';
 import { range, compile , derivative } from 'mathjs'
 import Plot from 'react-plotly.js';
+import axios from 'axios'
 
 const InputStyle = { //<<=== Input Font Format
 
@@ -117,7 +118,14 @@ class Newton_Raphson extends Component {
             [event.target.name]: event.target.value
         });
     }
-
+    DataBase = async()=>{
+        var response = await axios.get('http://localhost:3001/api/users/showOnePoint').then(res => {return res.data});
+        this.setState({
+            fx:response['data'][0]['fx'],
+            x:response['data'][0]['x']
+        })
+        this.newton_raphson(this.state.x);
+    }
     //------------------------------------------------------------ข้างล่างเป็นการ render ตารางขึ้นมา------------------------------------------------------------
 
     
@@ -147,7 +155,19 @@ class Newton_Raphson extends Component {
                                     fontWeight: "bold",
                                     fontSize: "20px" }}>Submit
                                     
-                                    </Button>
+                            </Button>
+
+                            <Button id="submit_button" onClick={
+                                () => this.DataBase()
+                            }
+                                style={{ 
+                                    marginBlockStart: "4%",
+                                    background: "#7DBCFB", 
+                                    color: "black", 
+                                    fontWeight: "bold",
+                                    fontSize: "20px" }}>Database
+                                    
+                            </Button>
 
                         </Card>
 

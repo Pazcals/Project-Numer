@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Input, Button , Layout} from 'antd';
 import 'antd/dist/antd.css';
 import {compile,derivative} from 'mathjs'
+import axios from 'axios'
 
 const {Content} = Layout;
 
@@ -77,6 +78,17 @@ class Central_1 extends Component {
         let scope = {x:parseFloat(X)}
         return expr.eval(scope)
     }
+
+    DataBase = async()=>{
+        var response = await axios.get('http://localhost:3001/api/users/showDiff').then(res => {return res.data});
+        this.setState({
+            fx:response['data'][0]['fx'],
+            degree:response['data'][0]['degree'],
+            x:response['data'][0]['x'],
+            h:response['data'][0]['h'],
+        })
+        this.central_1(parseInt(this.state.x), parseInt(this.state.h), parseInt(this.state.degree))
+    }
 	
     render() {
         return(
@@ -113,7 +125,21 @@ class Central_1 extends Component {
                                     fontWeight: "bold",
                                     fontSize: "20px" }}>Submit
 
-                                    </Button>
+                            </Button>
+
+                            <Button id="submit_button" onClick={
+
+                                ()=>this.DataBase()
+
+                            }
+                                style={{ 
+
+                                    background: "#7DBCFB", 
+                                    color: "black", 
+                                    fontWeight: "bold",
+                                    fontSize: "20px" }}>Database
+
+                            </Button>
 
                         </Card>
 

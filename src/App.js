@@ -114,7 +114,7 @@ class App extends React.Component {
               <SubMenu key="u4" title={
 
                 <span>
-                  <Icon type="stock" />Differentiation
+                  <Icon type="stock" />Integration
                 </span>
 
               }>
@@ -132,7 +132,7 @@ class App extends React.Component {
               <SubMenu key="u5" title={
 
                 <span>
-                  <Icon type="stock" />Integration
+                  <Icon type="stock" />Differentiation
                 </span>
 
               }>

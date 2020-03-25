@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Input, Button , Layout} from 'antd';
 import 'antd/dist/antd.css';
 import {compile,derivative} from 'mathjs'
+import axios from 'axios'
 
 const {Content} = Layout;
 
@@ -76,7 +77,17 @@ class Backward_1 extends Component {
         let scope = {x:parseFloat(X)}
         return expr.eval(scope)
     }
-	
+    
+    DataBase = async()=>{
+        var response = await axios.get('http://localhost:3001/api/users/showDiff').then(res => {return res.data});
+        this.setState({
+            fx:response['data'][0]['fx'],
+            degree:response['data'][0]['degree'],
+            x:response['data'][0]['x'],
+            h:response['data'][0]['h'],
+        })
+        this.backward_1(parseInt(this.state.x), parseInt(this.state.h), parseInt(this.state.degree))
+    }
     render() {
         return(
             <div style={{ background: "#FFFF", padding: "30px" ,  marginBlockStart: "2%"}}>
@@ -100,6 +111,7 @@ class Backward_1 extends Component {
                             <h2>Order Derivative</h2><Input size = "large" name="degree" style={InputStyle}></Input>
                             <h2>X</h2><Input size = "large" name="x" style={InputStyle}></Input><br/><br/>
                             <h2>H</h2><Input size="large" name="h" style={InputStyle}></Input><br/><br/>
+
                             <Button id="submit_button" onClick={
 
                                 ()=>this.backward_1(parseInt(this.state.x), parseInt(this.state.h), parseInt(this.state.degree))
@@ -112,8 +124,21 @@ class Backward_1 extends Component {
                                     fontWeight: "bold",
                                     fontSize: "20px" }}>Submit
 
-                                    </Button>
+                            </Button>
 
+                            <Button id="submit_button" onClick={
+
+                                ()=>this.DataBase()
+
+                            }
+                                style={{ 
+
+                                    background: "#7DBCFB", 
+                                    color: "black", 
+                                    fontWeight: "bold",
+                                    fontSize: "20px" }}>Database
+
+                            </Button>
                         </Card>
 
                     {this.state.showOutputCard && 

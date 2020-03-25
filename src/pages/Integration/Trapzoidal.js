@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Input, Button , Layout} from 'antd';
 import 'antd/dist/antd.css';
 import {compile} from 'mathjs'
+import axios from 'axios'
 
 var Algebrite = require('algebrite')
 
@@ -62,7 +63,16 @@ class Trapzoidal extends Component {
         let scope = {x:parseFloat(X)};
         return expr.eval(scope);        
     }
-	
+
+    DataBase = async()=>{
+        var response = await axios.get('http://localhost:3001/api/users/showIntegrat').then(res => {return res.data});
+        this.setState({
+            fx:response['data'][0]['fx'],
+            lower:response['data'][0]['lower'],
+            upper:response['data'][0]['upper'],
+        })
+        this.trapzoidal(parseInt(this.state.lower), parseInt(this.state.upper));
+    }
     render() {
         return(
             <div style={{ background: "#FFFF", padding: "30px" ,  marginBlockStart: "2%"}}>
@@ -97,7 +107,21 @@ class Trapzoidal extends Component {
                                     fontWeight: "bold",
                                     fontSize: "20px" }}>Submit
 
-                                    </Button>
+                            </Button>
+
+                            <Button id="submit_button" onClick={
+
+                                ()=>this.DataBase()
+
+                            }
+                                style={{ 
+
+                                    background: "#7DBCFB", 
+                                    color: "black", 
+                                    fontWeight: "bold",
+                                    fontSize: "20px" }}>Database
+
+                            </Button>
 
                         </Card>
 

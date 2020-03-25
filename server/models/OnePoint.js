@@ -5,7 +5,7 @@ let mongoose = require('mongoose');
 let userSchema5 = mongoose.Schema({
 
     fx : {type: String ,required : true },
-    x : {type: Number ,required : true},
+    x : {type: Number ,required : true}
 });
 
 let OnePoint = mongoose.model('OnePoint',userSchema5);
